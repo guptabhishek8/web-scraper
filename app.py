@@ -3,6 +3,7 @@ from flask_cors import CORS,cross_origin
 import requests
 from bs4 import BeautifulSoup as bs
 from urllib.request import urlopen as uReq
+import html
 
 app = Flask(__name__)
 
@@ -69,6 +70,9 @@ def index():
                 mydict = {"Product": searchString, "Name": name, "Rating": rating, "CommentHead": commentHead,
                           "Comment": custComment}
                 reviews.append(mydict)
+                #pd = "{}, {}, {}, {}, {} \n".format(searchString, name, rating, commentHead,custComment)
+                pd = f"{searchString}, {name}, {rating}, {commentHead}, {html.escape(custComment)} \n"
+                fw.write(pd)
             return render_template('results.html', reviews=reviews[0:(len(reviews)-1)])
         except Exception as e:
             print('The Exception message is: ',e)
